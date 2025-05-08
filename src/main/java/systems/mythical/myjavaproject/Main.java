@@ -1,17 +1,68 @@
 package systems.mythical.myjavaproject;
 
+import java.util.Scanner;
+
+import systems.mythical.myjavaproject.gui.GuiMenu;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("=== Modus Auswahl ===");
+            System.out.println("1. Terminal Modus");
+            System.out.println("2. GUI Modus");
+            System.out.print("Bitte wählen Sie einen Modus (1-2): ");
+            
+            int mode = scanner.nextInt();
+            
+            switch (mode) {
+                case 1 -> runTerminalMode(scanner);
+                case 2 -> runGuiMode();
+                default -> System.out.println("Ungültige Auswahl! Programm wird beendet.");
+            }
         }
+    }
+    
+    private static void runTerminalMode(Scanner scanner) {
+        while (true) {
+            System.out.println("\n=== Hauptmenü ===");
+            System.out.println("1. Geschwindigkeitsüberschreitung berechnen");
+            System.out.println("2. Taschenrechner");
+            System.out.println("3. ggT berechnen");
+            System.out.println("4. Multiplikation und Division");
+            System.out.println("5. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-5): ");
+            
+            int choice = scanner.nextInt();
+            
+            switch (choice) {
+                case 1 -> {
+                    Euro euro = new Euro();
+                    euro.euro();
+                }
+                case 2 -> {
+                    Calculator calculator = new Calculator();
+                    calculator.calculator();
+                }
+                case 3 -> {
+                    ggT ggt = new ggT();
+                    ggt.calculateGGT();
+                }
+                case 4 -> {
+                    MultiplicationDivisionConsole multiplicationDivisionConsole = new MultiplicationDivisionConsole();
+                    multiplicationDivisionConsole.start();
+                }
+                case 5 -> {
+                    System.out.println("Programm wird beendet.");
+                    return;
+                }
+                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-3.");
+            }
+        }
+    }
+    
+    private static void runGuiMode() {
+        new GuiMenu();
     }
 }
