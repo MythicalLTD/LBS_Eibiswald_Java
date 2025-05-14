@@ -33,8 +33,9 @@ public class Main {
             System.out.println("4. Multiplikation und Division");
             System.out.println("5. Gues ");
             System.out.println("6. Logarithmische Sterne");
-            System.out.println("7. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-7): ");
+            System.out.println("7. Person Manager");
+            System.out.println("8. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-8): ");
             
             int choice = scanner.nextInt();
             
@@ -64,10 +65,14 @@ public class Main {
                     logarithmicStars.start();
                 }
                 case 7 -> {
+                    PersonManager personManager = new PersonManager();
+                    personManager.start();
+                }
+                case 8 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
-                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-7.");
+                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-8.");
             }
         }
     }

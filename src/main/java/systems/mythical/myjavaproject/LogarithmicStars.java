@@ -14,7 +14,7 @@ public class LogarithmicStars {
             System.out.print("\n");
         }
     }
-    public static void start() {
+    public void start() {
         main(null);
     }
 

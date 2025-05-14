@@ -54,15 +54,16 @@ public class GuiMenu extends JFrame {
         // Center panel for buttons
         JPanel centerPanel = new JPanel();
         centerPanel.setOpaque(false);
-        centerPanel.setLayout(new GridLayout(3, 1, 20, 20));
+        centerPanel.setLayout(new GridLayout(4, 1, 20, 20));
         
         // Create custom buttons
         CustomButton speedButton = createCustomButton("Geschwindigkeitsüberschreitung berechnen");
         CustomButton calcButton = createCustomButton("Taschenrechner");
-        CustomButton exitButton = createCustomButton("Beenden");
         CustomButton ggtButton = createCustomButton("ggT berechnen");
         CustomButton multiplicationButton = createCustomButton("Multiplikation und Division");
         CustomButton guesGame = createCustomButton("Guesing game");
+        CustomButton personManagerButton = createCustomButton("Person Manager");
+        CustomButton exitButton = createCustomButton("Beenden");
 
         // Add action listeners
         speedButton.addActionListener(e -> {
@@ -85,21 +86,25 @@ public class GuiMenu extends JFrame {
             dispose();
         });
 
-        
         guesGame.addActionListener(e -> {
-            new MultiplicationDivision();
+            new NumberGuessingGameGui();
             dispose();
         });
 
+        personManagerButton.addActionListener(e -> {
+            new PersonManagerGui();
+            dispose();
+        });
         
         exitButton.addActionListener(e -> System.exit(0));
         
         centerPanel.add(speedButton);
         centerPanel.add(calcButton);
-        centerPanel.add(exitButton);
         centerPanel.add(ggtButton);
         centerPanel.add(multiplicationButton);
         centerPanel.add(guesGame);
+        centerPanel.add(personManagerButton);
+        centerPanel.add(exitButton);
         
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         
