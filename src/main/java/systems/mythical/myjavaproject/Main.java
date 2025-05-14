@@ -32,8 +32,9 @@ public class Main {
             System.out.println("3. ggT berechnen");
             System.out.println("4. Multiplikation und Division");
             System.out.println("5. Gues ");
-            System.out.println("6. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-6): ");
+            System.out.println("6. Logarithmische Sterne");
+            System.out.println("7. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-7): ");
             
             int choice = scanner.nextInt();
             
@@ -59,10 +60,14 @@ public class Main {
                     nmb.start();
                 }
                 case 6 -> {
+                    LogarithmicStars logarithmicStars = new LogarithmicStars();
+                    logarithmicStars.start();
+                }
+                case 7 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
-                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-6.");
+                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-7.");
             }
         }
     }
