@@ -31,8 +31,9 @@ public class Main {
             System.out.println("2. Taschenrechner");
             System.out.println("3. ggT berechnen");
             System.out.println("4. Multiplikation und Division");
-            System.out.println("5. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-5): ");
+            System.out.println("5. Gues ");
+            System.out.println("6. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-6): ");
             
             int choice = scanner.nextInt();
             
@@ -54,10 +55,14 @@ public class Main {
                     multiplicationDivisionConsole.start();
                 }
                 case 5 -> {
+                    NumberGuessingGame nmb = new NumberGuessingGame();
+                    nmb.start();
+                }
+                case 6 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
-                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-3.");
+                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-6.");
             }
         }
     }

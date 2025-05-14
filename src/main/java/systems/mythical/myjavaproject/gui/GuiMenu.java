@@ -62,6 +62,8 @@ public class GuiMenu extends JFrame {
         CustomButton exitButton = createCustomButton("Beenden");
         CustomButton ggtButton = createCustomButton("ggT berechnen");
         CustomButton multiplicationButton = createCustomButton("Multiplikation und Division");
+        CustomButton guesGame = createCustomButton("Guesing game");
+
         // Add action listeners
         speedButton.addActionListener(e -> {
             new SpeedGui();
@@ -82,6 +84,13 @@ public class GuiMenu extends JFrame {
             new MultiplicationDivision();
             dispose();
         });
+
+        
+        guesGame.addActionListener(e -> {
+            new MultiplicationDivision();
+            dispose();
+        });
+
         
         exitButton.addActionListener(e -> System.exit(0));
         
@@ -90,6 +99,8 @@ public class GuiMenu extends JFrame {
         centerPanel.add(exitButton);
         centerPanel.add(ggtButton);
         centerPanel.add(multiplicationButton);
+        centerPanel.add(guesGame);
+        
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         
         add(mainPanel);
