@@ -35,8 +35,9 @@ public class Main {
             System.out.println("6. Logarithmische Sterne");
             System.out.println("7. Person Manager");
             System.out.println("8. Bruchrechner");
-            System.out.println("9. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-9): ");
+            System.out.println("9. Custom Linked List");
+            System.out.println("10. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-10): ");
             
             int choice = scanner.nextInt();
             
@@ -74,6 +75,9 @@ public class Main {
                     bruchrechner.bruchrechner();
                 }
                 case 9 -> {
+                    ListProgram.main(new String[0]);
+                }
+                case 10 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
@@ -81,7 +85,10 @@ public class Main {
             }
         }
     }
+    @SuppressWarnings("unused") 
     private static void runGuiMode() {
-        new GuiMenu();
+        System.out.println("GUI Modus wird gestartet...");
+        GuiMenu gui = new GuiMenu();
+        System.out.println("GUI Modus wurde beendet.");
     }
 }

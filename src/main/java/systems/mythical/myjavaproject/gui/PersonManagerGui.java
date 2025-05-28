@@ -1,14 +1,32 @@
 package systems.mythical.myjavaproject.gui;
 
-import systems.mythical.myjavaproject.Person;
-import systems.mythical.myjavaproject.PersonManager;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import systems.mythical.myjavaproject.Person;
 
 public class PersonManagerGui extends JFrame {
     private static final Color BACKGROUND_COLOR = new Color(45, 45, 45);
@@ -142,7 +160,7 @@ public class PersonManagerGui extends JFrame {
         
         return panel;
     }
-    
+    @SuppressWarnings("unused")
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panel.setOpaque(false);
@@ -154,7 +172,7 @@ public class PersonManagerGui extends JFrame {
         addButton.addActionListener(e -> addPerson());
         showStatsButton.addActionListener(e -> showStatistics());
         backButton.addActionListener(e -> {
-            new GuiMenu();
+            GuiMenu gui = new GuiMenu();
             dispose();
         });
         
