@@ -38,8 +38,9 @@ public class Main {
             System.out.println("9. Custom Linked List");
             System.out.println("10. Zeugnisanwendung");
             System.out.println("11. Autowaschanlage-Verwaltung");
-            System.out.println("12. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-12): ");
+            System.out.println("12. Tic Tac Toe");
+            System.out.println("13. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-13): ");
             
             int choice = scanner.nextInt();
             
@@ -88,6 +89,10 @@ public class Main {
                     autowaschanlage.start();
                 }
                 case 12 -> {
+                    TicTacToeAnwendung ticTacToeAnwendung = new TicTacToeAnwendung();
+                    ticTacToeAnwendung.start();
+                }
+                case 13 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
