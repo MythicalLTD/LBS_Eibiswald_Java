@@ -36,8 +36,10 @@ public class Main {
             System.out.println("7. Person Manager");
             System.out.println("8. Bruchrechner");
             System.out.println("9. Custom Linked List");
-            System.out.println("10. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-10): ");
+            System.out.println("10. Zeugnisanwendung");
+            System.out.println("11. Autowaschanlage-Verwaltung");
+            System.out.println("12. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-12): ");
             
             int choice = scanner.nextInt();
             
@@ -78,10 +80,18 @@ public class Main {
                     ListProgram.main(new String[0]);
                 }
                 case 10 -> {
+                    ZeugnisAnwendung zeugnisAnwendung = new ZeugnisAnwendung();
+                    zeugnisAnwendung.start();
+                }
+                case 11 -> {
+                    AutowaschanlageAnwendung autowaschanlage = new AutowaschanlageAnwendung();
+                    autowaschanlage.start();
+                }
+                case 12 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
-                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-9.");
+                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-12.");
             }
         }
     }
