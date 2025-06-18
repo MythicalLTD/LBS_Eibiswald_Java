@@ -2,6 +2,8 @@ package systems.mythical.myjavaproject;
 
 import java.util.Scanner;
 
+import javax.swing.SwingUtilities;
+
 import systems.mythical.myjavaproject.gui.GuiMenu;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -39,8 +41,11 @@ public class Main {
             System.out.println("10. Zeugnisanwendung");
             System.out.println("11. Autowaschanlage-Verwaltung");
             System.out.println("12. Tic Tac Toe");
-            System.out.println("13. Beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-13): ");
+            System.out.println("13. Tic Tac Toe (Netzwerk/LAN)");
+            System.out.println("14. Tic Tac Toe (Netzwerk/LAN GUI)");
+            System.out.println("15. Tic Tac Toe (Browser/Web)");
+            System.out.println("16. Beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-16): ");
             
             int choice = scanner.nextInt();
             
@@ -93,10 +98,20 @@ public class Main {
                     ticTacToeAnwendung.start();
                 }
                 case 13 -> {
+                    TicTacToeNetworkAnwendung ticTacToeNetworkAnwendung = new TicTacToeNetworkAnwendung();
+                    ticTacToeNetworkAnwendung.start();
+                }
+                case 14 -> {
+                    startGuiNetworkClient();
+                }
+                case 15 -> {
+                    startBrowserServer();
+                }
+                case 16 -> {
                     System.out.println("Programm wird beendet.");
                     return;
                 }
-                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-12.");
+                default -> System.out.println("Ungültige Auswahl! Bitte wählen Sie 1-16.");
             }
         }
     }
@@ -105,5 +120,60 @@ public class Main {
         System.out.println("GUI Modus wird gestartet...");
         GuiMenu gui = new GuiMenu();
         System.out.println("GUI Modus wurde beendet.");
+    }
+    
+    /**
+     * Startet den GUI-Netzwerk-Client
+     */
+    private static void startGuiNetworkClient() {
+        System.out.println("🎨 GUI-Netzwerk-Client wird gestartet...");
+        System.out.println("💡 Die GUI wird in einem separaten Fenster geöffnet.");
+        
+        try {
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    TicTacToeNetworkGUI gui = new TicTacToeNetworkGUI();
+                    gui.setVisible(true);
+                    System.out.println("✅ GUI-Netzwerk-Client erfolgreich gestartet!");
+                } catch (Exception e) {
+                    System.err.println("❌ Fehler beim Starten der GUI: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            System.err.println("❌ GUI-Netzwerk-Client Fehler: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Startet den Browser-basierten TicTacToe Server
+     */
+    private static void startBrowserServer() {
+        System.out.println("🌐 Multiplayer TicTacToe Server wird gestartet...");
+        System.out.println("💡 Der Server wird im Hintergrund laufen.");
+        System.out.println("📱 Spieler können über den Browser beitreten.");
+        
+        try {
+            // Start server in a separate thread
+            Thread serverThread = new Thread(() -> {
+                try {
+                    SimpleMultiplayerServer.start();
+                    System.out.println("✅ Multiplayer-Server erfolgreich gestartet!");
+                    System.out.println("🌐 Öffnen Sie http://localhost:8080 im Browser");
+                    System.out.println("⏹️  Drücken Sie Enter im Terminal um den Server zu stoppen");
+                    
+                    // Wait for user input to stop server
+                    System.in.read();
+                    SimpleMultiplayerServer.stop();
+                    System.out.println("🛑 Multiplayer-Server gestoppt.");
+                } catch (Exception e) {
+                    System.err.println("❌ Multiplayer-Server Fehler: " + e.getMessage());
+                }
+            });
+            serverThread.setDaemon(true);
+            serverThread.start();
+            
+        } catch (Exception e) {
+            System.err.println("❌ Multiplayer-Server Fehler: " + e.getMessage());
+        }
     }
 }

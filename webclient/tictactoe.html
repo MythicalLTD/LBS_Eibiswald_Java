@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic Tac Toe WebSocket</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f0f0; }
+    #board { display: grid; grid-template-columns: repeat(3, 80px); grid-gap: 8px; margin: 40px auto; width: 264px; }
+    .cell {
+      width: 80px; height: 80px; font-size: 2.5em; text-align: center; background: #fff; border: 2px solid #888; cursor: pointer;
+    }
+    #status { text-align: center; font-size: 1.2em; margin-top: 20px; }
+    #connect { margin: 30px auto; display: flex; flex-direction: column; align-items: center; }
+    #connect input { margin: 5px; padding: 5px; }
+    #connect button { padding: 6px 18px; }
+  </style>
+</head>
+<body>
+  <div id="connect">
+    <input id="wsurl" value="ws://localhost:8082/ws/tictactoe" size="40" />
+    <button onclick="connectWS()">Connect</button>
+  </div>
+  <div id="status"></div>
+  <div id="board"></div>
+  <script>
+    let ws, mySymbol = '', myTurn = false, board = Array(9).fill(' ');
+    const status = document.getElementById('status');
+    const boardDiv = document.getElementById('board');
+    function connectWS() {
+      ws = new WebSocket(document.getElementById('wsurl').value);
+      ws.onopen = () => { status.textContent = 'Connected. Waiting for opponent...'; };
+      ws.onmessage = e => handleMsg(e.data);
+      ws.onclose = () => { status.textContent = 'Disconnected.'; };
+    }
+    function handleMsg(msg) {
+      if (msg === 'WELCOME') {
+        status.textContent = 'Waiting for opponent...';
+      } else if (msg.startsWith('START:')) {
+        mySymbol = msg.split(':')[1];
+        status.textContent = 'Game started! You are ' + mySymbol;
+        myTurn = (mySymbol === 'X');
+        drawBoard();
+      } else if (msg.startsWith('BOARD:')) {
+        board = msg.substring(6).split('');
+        drawBoard();
+      } else if (msg === 'WIN') {
+        status.textContent = 'You win!';
+        myTurn = false;
+      } else if (msg === 'LOSE') {
+        status.textContent = 'You lose!';
+        myTurn = false;
+      } else if (msg === 'DRAW') {
+        status.textContent = 'Draw!';
+        myTurn = false;
+      } else if (msg === 'OPPONENT_LEFT') {
+        status.textContent = 'Opponent left. Waiting for new opponent...';
+        myTurn = false;
+      }
+    }
+    function drawBoard() {
+      boardDiv.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('button');
+        cell.className = 'cell';
+        cell.textContent = board[i] === ' ' ? '' : board[i];
+        cell.disabled = board[i] !== ' ' || !myTurn;
+        cell.onclick = () => {
+          if (myTurn && board[i] === ' ') {
+            ws.send('MOVE:' + i);
+            myTurn = false;
+          }
+        };
+        boardDiv.appendChild(cell);
+      }
+    }
+  </script>
+</body>
+</html> 
