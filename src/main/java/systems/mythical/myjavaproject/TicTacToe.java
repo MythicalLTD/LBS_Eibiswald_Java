@@ -295,4 +295,47 @@ public class TicTacToe {
         System.out.println("   7 | 8 | 9");
         System.out.println("=".repeat(40));
     }
+    
+    /**
+     * Gibt das aktuelle Spielbrett zurück (für KI-Integration)
+     * @return Kopie des aktuellen Spielbretts
+     */
+    public char[][] getBoard() {
+        char[][] boardCopy = new char[BOARD_SIZE][BOARD_SIZE];
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                boardCopy[row][col] = board[row][col];
+            }
+        }
+        return boardCopy;
+    }
+    
+    /**
+     * Führt einen KI-Zug aus
+     * @param ai Die KI-Instanz
+     * @return true wenn Zug erfolgreich, false wenn ungültig
+     */
+    public boolean makeAIMove(TicTacToeAI ai) {
+        if (gameEnded) {
+            System.out.println("❌ Das Spiel ist bereits beendet!");
+            return false;
+        }
+        
+        if (currentPlayer != PLAYER_O) {
+            System.out.println("❌ Es ist nicht der KI-Zug!");
+            return false;
+        }
+        
+        char[][] boardCopy = getBoard();
+        int aiMove = ai.chooseMove(boardCopy);
+        
+        if (aiMove == -1) {
+            System.out.println("❌ KI konnte keinen Zug finden!");
+            return false;
+        }
+        
+        System.out.println("🤖 KI wählt Feld " + aiMove + " (" + ai.getDescription() + ")");
+        
+        return makeMove(aiMove);
+    }
 } 

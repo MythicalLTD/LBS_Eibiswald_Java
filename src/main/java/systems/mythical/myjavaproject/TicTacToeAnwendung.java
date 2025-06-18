@@ -8,14 +8,18 @@ import java.util.Scanner;
  */
 public class TicTacToeAnwendung {
     private TicTacToe spiel;
+    private TicTacToeAI ai;
     private Scanner scanner;
+    private boolean aiMode;
     
     /**
      * Konstruktor - Initialisiert die Anwendung
      */
     public TicTacToeAnwendung() {
         this.spiel = new TicTacToe();
+        this.ai = new TicTacToeAI();
         this.scanner = new Scanner(System.in);
+        this.aiMode = false;
     }
     
     /**
@@ -46,9 +50,10 @@ public class TicTacToeAnwendung {
         System.out.println("=".repeat(35));
         System.out.println("1️⃣  Neues Spiel starten");
         System.out.println("2️⃣  Spielregeln anzeigen");
+        System.out.println("3️⃣  KI-Einstellungen");
         System.out.println("0️⃣  Beenden");
         System.out.println("=".repeat(35));
-        System.out.print("Bitte wählen Sie eine Option (0-2): ");
+        System.out.print("Bitte wählen Sie eine Option (0-3): ");
         
         try {
             int choice = scanner.nextInt();
@@ -56,7 +61,7 @@ public class TicTacToeAnwendung {
             
             switch (choice) {
                 case 1 -> {
-                    spielStarten();
+                    spielModusWaehlen();
                     return true;
                 }
                 case 2 -> {
@@ -64,11 +69,15 @@ public class TicTacToeAnwendung {
                     pausieren();
                     return true;
                 }
+                case 3 -> {
+                    aiEinstellungen();
+                    return true;
+                }
                 case 0 -> {
                     return false;
                 }
                 default -> {
-                    System.out.println("❌ Ungültige Auswahl! Bitte 0-2 eingeben.");
+                    System.out.println("❌ Ungültige Auswahl! Bitte 0-3 eingeben.");
                     return true;
                 }
             }
@@ -80,12 +89,104 @@ public class TicTacToeAnwendung {
     }
     
     /**
+     * Lässt den Benutzer den Spielmodus wählen
+     */
+    private void spielModusWaehlen() {
+        System.out.println("\n" + "=".repeat(35));
+        System.out.println("        SPIELMODUS");
+        System.out.println("=".repeat(35));
+        System.out.println("1️⃣  Mensch vs Mensch");
+        System.out.println("2️⃣  Mensch vs KI");
+        System.out.println("3️⃣  KI vs KI (Demo)");
+        System.out.println("0️⃣  Zurück zum Hauptmenü");
+        System.out.println("=".repeat(35));
+        System.out.print("Bitte wählen Sie einen Modus (0-3): ");
+        
+        try {
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Buffer leeren
+            
+            switch (choice) {
+                case 1 -> {
+                    aiMode = false;
+                    spielStarten();
+                }
+                case 2 -> {
+                    aiMode = true;
+                    spielStarten();
+                }
+                case 3 -> {
+                    aiDemo();
+                }
+                case 0 -> {
+                    // Zurück zum Hauptmenü
+                }
+                default -> {
+                    System.out.println("❌ Ungültige Auswahl! Bitte 0-3 eingeben.");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Ungültige Eingabe! Bitte eine Zahl eingeben.");
+            scanner.nextLine(); // Buffer leeren
+        }
+    }
+    
+    /**
+     * Zeigt KI-Einstellungen an und ermöglicht Änderungen
+     */
+    private void aiEinstellungen() {
+        System.out.println("\n" + "=".repeat(35));
+        System.out.println("      KI-EINSTELLUNGEN");
+        System.out.println("=".repeat(35));
+        System.out.println("Aktuelle KI: " + ai.getDescription());
+        System.out.println();
+        TicTacToeAI.showDifficulties();
+        System.out.println("4️⃣  Zurück zum Hauptmenü");
+        System.out.println("=".repeat(35));
+        System.out.print("Wählen Sie eine Schwierigkeit (1-4): ");
+        
+        try {
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Buffer leeren
+            
+            switch (choice) {
+                case 1 -> {
+                    ai.setDifficulty(TicTacToeAI.Difficulty.EASY);
+                    System.out.println("✅ KI-Schwierigkeit auf 'Leicht' gesetzt!");
+                }
+                case 2 -> {
+                    ai.setDifficulty(TicTacToeAI.Difficulty.MEDIUM);
+                    System.out.println("✅ KI-Schwierigkeit auf 'Mittel' gesetzt!");
+                }
+                case 3 -> {
+                    ai.setDifficulty(TicTacToeAI.Difficulty.HARD);
+                    System.out.println("✅ KI-Schwierigkeit auf 'Schwer' gesetzt!");
+                }
+                case 4 -> {
+                    // Zurück zum Hauptmenü
+                }
+                default -> {
+                    System.out.println("❌ Ungültige Auswahl! Bitte 1-4 eingeben.");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Ungültige Eingabe! Bitte eine Zahl eingeben.");
+            scanner.nextLine(); // Buffer leeren
+        }
+    }
+    
+    /**
      * Startet ein neues Spiel und verwaltet den Spielablauf
      */
     private void spielStarten() {
         spiel.newGame();
         
-        System.out.println("\n🎯 Spiel gestartet! Spieler 1 (X) beginnt.");
+        if (aiMode) {
+            System.out.println("\n🎯 Spiel gegen KI gestartet! Sie sind Spieler 1 (X).");
+            System.out.println(ai.getDescription());
+        } else {
+            System.out.println("\n🎯 Spiel gestartet! Spieler 1 (X) beginnt.");
+        }
         
         // Hauptspielschleife
         while (!spiel.isGameEnded()) {
@@ -99,19 +200,31 @@ public class TicTacToeAnwendung {
             // Verfügbare Felder anzeigen
             spiel.showAvailablePositions();
             
-            // Spielzug einlesen
-            int position = eingabePosition();
-            
-            if (position == -1) {
-                // Spieler möchte zurück zum Hauptmenü
-                System.out.println("🔙 Spiel abgebrochen. Zurück zum Hauptmenü...");
-                return;
+            // Spielzug einlesen oder KI-Zug ausführen
+            if (aiMode && spiel.getCurrentPlayer() == 'O') {
+                // KI-Zug
+                try {
+                    Thread.sleep(1000); // Kurze Pause für bessere UX
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                
+                spiel.makeAIMove(ai);
+            } else {
+                // Menschlicher Spieler
+                int position = eingabePosition();
+                
+                if (position == -1) {
+                    // Spieler möchte zurück zum Hauptmenü
+                    System.out.println("🔙 Spiel abgebrochen. Zurück zum Hauptmenü...");
+                    return;
+                }
+                
+                // Spielzug ausführen
+                spiel.makeMove(position);
             }
             
-            // Spielzug ausführen
-            boolean erfolgreich = spiel.makeMove(position);
-            
-            if (erfolgreich && spiel.isGameEnded()) {
+            if (spiel.isGameEnded()) {
                 // Finales Spielbrett anzeigen
                 spiel.displayBoard();
                 // Ergebnis anzeigen
@@ -121,6 +234,39 @@ public class TicTacToeAnwendung {
                 nachspielOptionen();
             }
         }
+    }
+    
+    /**
+     * Führt eine KI vs KI Demo aus
+     */
+    private void aiDemo() {
+        System.out.println("\n🤖 KI vs KI DEMO");
+        System.out.println("=".repeat(20));
+        System.out.println(ai.getDescription());
+        
+        spiel.newGame();
+        
+        while (!spiel.isGameEnded()) {
+            spiel.displayBoard();
+            System.out.println("🎲 Spieler " + spiel.getCurrentPlayerNumber() + 
+                             " (" + spiel.getCurrentPlayer() + ") ist am Zug");
+            
+            try {
+                Thread.sleep(2000); // 2 Sekunden warten
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            
+            spiel.makeAIMove(ai);
+            
+            if (spiel.isGameEnded()) {
+                spiel.displayBoard();
+                spiel.displayResult();
+                break;
+            }
+        }
+        
+        pausieren();
     }
     
     /**
